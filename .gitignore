@@ -1,0 +1,3 @@
+/server
+/src/webmockserver/vendor
+/src/webmockserver/proto/*.pb.go

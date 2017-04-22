@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package com.qiniu.es_cms.webmockserver;
+
+service WebMock {
+    rpc Set (WebMockAssertions) returns (Void);
+    rpc Get (Void) returns (WebMockAssertions);
+    rpc Done (Void) returns (WebMockResults);
+}
+
+message Void {
+}
+
+message WebMockAssertions {
+    repeated WebMockAssertion assertions = 1;
+}
+
+message StringArray {
+    repeated string strings = 1;
+}
+
+message WebMockAssertion {
+    string host = 1;
+    bool matchHost = 2;
+    string method = 3;
+    bool matchMethod = 4;
+    string path = 5;
+    bool matchPath = 6;
+    map <string, StringArray> headers = 7;
+    bool matchHeaders = 8;
+    map <string, StringArray> parameters = 9;
+    bool matchParameters = 10;
+    bytes body = 11;
+    bool matchBody = 12;
+    int64 atLeast = 13;
+    int64 atMost = 14;
+    int32 returnStatusCode = 15;
+    map <string, StringArray> returnHeaders = 16;
+    bytes returnBody = 17;
+}
+
+message MatchRequest {
+    string host = 1;
+    string method = 2;
+    string path = 3;
+    map <string, StringArray> headers = 4;
+    map <string, StringArray> parameters = 5;
+}
+
+message WebMockResult {
+    bool success = 1;
+    WebMockAssertion assertion = 2;
+    repeated MatchRequest matchRequests = 3;
+}
+
+message WebMockResults {
+    bool success = 1;
+    repeated WebMockResult assertionResults = 2;
+}
